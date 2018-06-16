@@ -6,11 +6,11 @@ import slick.jdbc.JdbcProfile
 trait DBComponent {
 
   /** Jdbc profile **/
-  protected val profile: JdbcProfile
+  val profile: JdbcProfile
 
   import profile.api._
 
   /** Database **/
-  protected def db: Database
+  def db: Database
 
 }

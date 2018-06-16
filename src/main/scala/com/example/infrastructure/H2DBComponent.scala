@@ -8,12 +8,12 @@ import slick.jdbc.{H2Profile, JdbcProfile}
 trait H2DBComponent extends DBComponent {
 
   /** Jdbc profile **/
-  override protected val profile: JdbcProfile = H2Profile
+  override val profile: JdbcProfile = H2Profile
 
   import profile.api._
 
   /** Database instance **/
-  override protected lazy val db: Database = H2DBConnector.connection
+  override lazy val db: Database = H2DBConnector.connection
 
 }
 

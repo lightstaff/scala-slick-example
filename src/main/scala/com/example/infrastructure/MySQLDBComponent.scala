@@ -8,12 +8,12 @@ import slick.jdbc.{JdbcProfile, MySQLProfile}
 trait MySQLDBComponent extends DBComponent {
 
   /** Jdbc profile **/
-  override protected val profile: JdbcProfile = MySQLProfile
+  override val profile: JdbcProfile = MySQLProfile
 
   import profile.api._
 
   /** Database instance **/
-  override protected lazy val db: Database = MySQLDBConnector.connection
+  override lazy val db: Database = MySQLDBConnector.connection
 
 }
 

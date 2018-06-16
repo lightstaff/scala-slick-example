@@ -38,6 +38,8 @@ libraryDependencies ++= Seq(
 
 mainClass in Compile := Some("com.example.Main")
 
+parallelExecution in Test := false
+
 scalacOptions ++= Seq(
   "-deprecation",
   "-encoding", "utf-8",

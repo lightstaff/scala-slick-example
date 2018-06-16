@@ -12,7 +12,7 @@ import com.typesafe.config.ConfigFactory
 
 import com.example.api.UserRoutes
 import com.example.infrastructure.MySQLDBComponent
-import com.example.repository.UserRepositoryImpl
+import com.example.repository.UserRepositoryImplDI
 
 object Main extends App {
 
@@ -25,8 +25,11 @@ object Main extends App {
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val executor: ExecutionContext = system.dispatcher
 
-  private val userRepository = new UserRepositoryImpl with MySQLDBComponent
+  /** if use user repository implement self type **/
+  // private val userRepository = new UserRepositoryImplSelfType with MySQLDBComponent
 
+  private val dbComponent = new MySQLDBComponent {}
+  private val userRepository = UserRepositoryImplDI(dbComponent)
   private val userRoutes = UserRoutes(userRepository)
 
   private val routes = userRoutes.routes

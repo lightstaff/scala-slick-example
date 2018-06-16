@@ -9,9 +9,9 @@ import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 import scalaz.{-\/, \/-}
 
 import com.example.infrastructure.H2DBComponent
-import com.example.repository.UserRepositoryImpl
+import com.example.repository.UserRepositoryImplSelfType
 
-class UserRepositorySpec
+class UserRepositoryImplSelfTypeH2Spec
     extends WordSpecLike
     with Matchers
     with BeforeAndAfterAll
@@ -25,7 +25,7 @@ class UserRepositorySpec
   override implicit val patienceConfig: PatienceConfig =
     PatienceConfig(timeout = Span(5, Seconds), interval = Span(200, Millis))
 
-  private val repository = new UserRepositoryImpl with H2DBComponent
+  private val repository = new UserRepositoryImplSelfType with H2DBComponent
 
   override def afterAll(): Unit = {
     system.terminate()

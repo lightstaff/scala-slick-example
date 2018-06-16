@@ -8,8 +8,8 @@ import scalaz.syntax.ToEitherOps
 
 import com.example.infrastructure.DBComponent
 
-/** User repository implement **/
-trait UserRepositoryImpl extends UserRepository with ToEitherOps {
+/** User repository implement self type **/
+trait UserRepositoryImplSelfType extends UserRepository with ToEitherOps {
   this: DBComponent =>
 
   import profile.api._
@@ -22,7 +22,7 @@ trait UserRepositoryImpl extends UserRepository with ToEitherOps {
     *
     * @return Sequence in user
     */
-  override def getAll(implicit ex: ExecutionContext): Future[\/[Throwable, Seq[User]]] =
+  override def getAll(implicit ec: ExecutionContext): Future[\/[Throwable, Seq[User]]] =
     db.run(users.result).map(_.right[Throwable]).recover {
       case NonFatal(ex) => ex.left[Seq[User]]
     }
@@ -33,7 +33,7 @@ trait UserRepositoryImpl extends UserRepository with ToEitherOps {
     * @return Optional in user
     */
   override def getById(id: Int)(
-      implicit ex: ExecutionContext): Future[\/[Throwable, Option[User]]] = {
+      implicit ec: ExecutionContext): Future[\/[Throwable, Option[User]]] = {
     val q = for {
       u <- users if u.id === id
     } yield u
@@ -48,7 +48,7 @@ trait UserRepositoryImpl extends UserRepository with ToEitherOps {
     * @param user user
     * @return created id
     */
-  override def add(user: User)(implicit ex: ExecutionContext): Future[\/[Throwable, Int]] =
+  override def add(user: User)(implicit ec: ExecutionContext): Future[\/[Throwable, Int]] =
     db.run(users returning users.map(_.id) += user).map(_.right[Throwable]).recover {
       case NonFatal(ex) => ex.left[Int]
     }
@@ -58,7 +58,7 @@ trait UserRepositoryImpl extends UserRepository with ToEitherOps {
     * @param user user
     * @return update count
     */
-  override def update(user: User)(implicit ex: ExecutionContext): Future[\/[Throwable, Int]] = {
+  override def update(user: User)(implicit ec: ExecutionContext): Future[\/[Throwable, Int]] = {
     val q = for {
       u <- users if u.id === user.id
     } yield u.name
@@ -73,7 +73,7 @@ trait UserRepositoryImpl extends UserRepository with ToEitherOps {
     * @param id identity
     * @return delete count
     */
-  override def delete(id: Int)(implicit ex: ExecutionContext): Future[\/[Throwable, Int]] = {
+  override def delete(id: Int)(implicit ec: ExecutionContext): Future[\/[Throwable, Int]] = {
     val q = for {
       u <- users if u.id === id
     } yield u
